@@ -1,0 +1,76 @@
+@import "functions";
+
+@mixin attr-x(
+    $attr,
+    $attr-count: 10,
+    $attr-steps: 10,
+    $initial-value: 0,
+    $unit: '%',
+    $attr-alias: '',
+    $media-query: ''
+) {
+    @if ($media-query == '') {
+        @for $i from 1 through $attr-count {
+            $attr-value: ($attr-steps * $i) + $initial-value;
+
+            $attr-name: if($attr-alias == '', $attr, $attr-alias);
+
+            .#{$attr-name}#{$attr-value} {
+                @if $unit == rem {
+                    #{$attr}: rem($attr-value) !important;
+                } @else {
+                    #{$attr}: #{$attr-value}#{$unit} !important;
+                }
+            }
+        }
+    } @else {
+        $min-size: if($media-query == 'md', 0px, 768px);
+        $max-size: if($media-query == 'md', 768px, 1192px);
+        @media screen and (min-width: $min-size) and (max-width: $max-size) {
+            @for $i from 1 through $attr-count {
+                $attr-value: ($attr-steps * $i) + $initial-value;
+
+                $attr-name: if($attr-alias == '', $attr, $attr-alias);
+                .#{$attr-name}#{$attr-value} {
+                    @if $unit == rem {
+                        #{$attr}: rem($attr-value) !important;
+                    } @else {
+                        #{$attr}: #{$attr-value}#{$unit} !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin attr-not-numeric(
+    $attr,
+    $attr-alias: '',
+    $media-query: '',
+    $attr-vals...
+) {
+    @if ($media-query == '') {
+        $attr-name: if($attr-alias == '', $attr, $attr-alias);
+
+        @each $val in $attr-vals {
+            @each $name, $alias in $val {
+                .#{$attr-name}#{$alias} {
+                    #{$attr}: $name !important;
+                }
+            }
+        }
+    } @else {
+        $min-size: if($media-query == 'md', 0px, 768px);
+        $max-size: if($media-query == 'md', 768px, 1192px);
+        $attr-name: if($attr-alias == '', $attr, $attr-alias);
+        @media screen and (min-width: $min-size) and (max-width: $max-size) {
+            @each $val in $attr-vals {
+                @each $name, $alias in $val {
+                    .#{$attr-name}#{$alias} {
+                        #{$attr}: $name !important;
+                    }
+                }
+            }
+        }
+    }
+}
