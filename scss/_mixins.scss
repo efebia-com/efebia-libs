@@ -1,4 +1,5 @@
 @import "functions";
+@use "sass:meta";
 
 @mixin attr-x(
     $attr,
@@ -70,6 +71,39 @@
                         #{$attr}: $name !important;
                     }
                 }
+            }
+        }
+    }
+}
+
+@mixin attr-x-custom (
+    $attr,
+    $attr-steps: 10,
+    $initial-value: 0,
+    $initial-step: 1,
+    $end-included-step: 10,
+    $unit: '%',
+    $attr-alias: '',
+) {
+    @for $i from $initial-step through $end-included-step {
+        $attr-value: ($attr-steps * $i) + $initial-value;
+
+        $attr-name: null;
+        $attr-full-name: null;
+
+        @if meta.type-of($attr-alias) == function {
+            $attr-name: meta.call($attr-alias, $attr-value, $i);
+            $attr-full-name: #{$attr-name}
+        } @else {
+            $attr-name: if($attr-alias == '', $attr-name, $attr-alias);
+            $attr-full-name: #{$attr-name}#{$attr-value}
+        }
+
+        .#{$attr-full-name} {
+            @if $unit == rem {
+                #{$attr}: rem($attr-value) !important;
+            } @else {
+                #{$attr}: #{$attr-value}#{$unit} !important;
             }
         }
     }
