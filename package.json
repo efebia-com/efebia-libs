@@ -1,6 +1,6 @@
 {
 	"name": "efebia-libs",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "JS, Svelte and SCSS libs",
 	"main": "index.js",
 	"scripts": {
