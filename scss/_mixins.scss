@@ -26,7 +26,7 @@
 
 			// Fix for iOS version lower than 14.5 (Safari version lower than 14.1)
 			// Using the lobotomized owl selector
-			// This fix is strictly bounded to bootsrap flex utility classes
+			// This fix is strictly bounded to bootstrap flex utility classes
 			@if ($attr == 'gap') {
 				@supports (-webkit-touch-callout: none) and (not (translate: none)) {
 					.d-flex.flex-column.#{$attr-name}#{$attr-value} > * + * {
@@ -56,7 +56,7 @@
 
 				// Fix for iOS version lower than 14.5 (Safari version lower than 14.1)
 				// Using the lobotomized owl selector
-				// This fix is strictly bounded to bootsrap flex utility classes
+				// This fix is strictly bounded to bootstrap flex utility classes
 				@if ($attr == 'gap') {
 					@supports (-webkit-touch-callout: none) and (not (translate: none)) {
 						.d-flex.flex-column.#{$attr-name}#{$attr-value} > * + * {
