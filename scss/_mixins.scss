@@ -25,11 +25,15 @@
 			}
 
 			// Fix for iOS version lower than 14.5 (Safari version lower than 14.1)
-			// Source : https://ppuzio.medium.com/flexbox-gap-workaround-for-safari-on-ios-14-13-and-lower-ffcae589eb69
+			// Using the lobotomized owl selector
+			// This fix is strictly bounded to bootsrap flex utility classes
 			@if ($attr == 'gap') {
 				@supports (-webkit-touch-callout: none) and (not (translate: none)) {
-					.#{$attr-name}#{$attr-value}:not(:last-child) {
-						margin-right: rem($attr-value) !important;
+					.d-flex.flex-column.#{$attr-name}#{$attr-value} > * + * {
+						margin: rem($attr-value) 0 0 0 !important;
+					}
+					.d-flex.#{$attr-name}#{$attr-value} {
+						margin: 0 0 0 rem($attr-value) !important;
 					}
 				}
 			}
@@ -51,11 +55,15 @@
 				}
 
 				// Fix for iOS version lower than 14.5 (Safari version lower than 14.1)
-				// Source : https://ppuzio.medium.com/flexbox-gap-workaround-for-safari-on-ios-14-13-and-lower-ffcae589eb69
+				// Using the lobotomized owl selector
+				// This fix is strictly bounded to bootsrap flex utility classes
 				@if ($attr == 'gap') {
 					@supports (-webkit-touch-callout: none) and (not (translate: none)) {
-						.#{$attr-name}#{$attr-value}:not(:last-child) {
-							margin-right: rem($attr-value) !important;
+						.d-flex.flex-column.#{$attr-name}#{$attr-value} > * + * {
+							margin: rem($attr-value) 0 0 0 !important;
+						}
+						.d-flex.#{$attr-name}#{$attr-value} {
+							margin: 0 0 0 rem($attr-value) !important;
 						}
 					}
 				}
