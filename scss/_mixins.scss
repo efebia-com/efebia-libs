@@ -1,110 +1,130 @@
-@use "sass:meta";
-@import "functions";
+@use 'sass:meta';
+@import 'functions';
 
 @mixin attr-x(
-    $attr,
-    $attr-count: 10,
-    $attr-steps: 10,
-    $initial-value: 0,
-    $unit: '%',
-    $attr-alias: '',
-    $media-query: ''
+	$attr,
+	$attr-count: 10,
+	$attr-steps: 10,
+	$initial-value: 0,
+	$unit: '%',
+	$attr-alias: '',
+	$media-query: ''
 ) {
-    @if ($media-query == '') {
-        @for $i from 1 through $attr-count {
-            $attr-value: ($attr-steps * $i) + $initial-value;
+	@if ($media-query == '') {
+		@for $i from 1 through $attr-count {
+			$attr-value: ($attr-steps * $i) + $initial-value;
 
-            $attr-name: if($attr-alias == '', $attr, $attr-alias);
+			$attr-name: if($attr-alias == '', $attr, $attr-alias);
 
-            .#{$attr-name}#{$attr-value} {
-                @if $unit == rem {
-                    #{$attr}: rem($attr-value) !important;
-                } @else {
-                    #{$attr}: #{$attr-value}#{$unit} !important;
-                }
-            }
-        }
-    } @else {
-        $min-size: if($media-query == 'md', 0px, 768px);
-        $max-size: if($media-query == 'md', 768px, 1192px);
-        @media screen and (min-width: $min-size) and (max-width: $max-size) {
-            @for $i from 1 through $attr-count {
-                $attr-value: ($attr-steps * $i) + $initial-value;
+			.#{$attr-name}#{$attr-value} {
+				@if $unit == rem {
+					#{$attr}: rem($attr-value) !important;
+				} @else {
+					#{$attr}: #{$attr-value}#{$unit} !important;
+				}
+			}
 
-                $attr-name: if($attr-alias == '', $attr, $attr-alias);
-                .#{$attr-name}#{$attr-value} {
-                    @if $unit == rem {
-                        #{$attr}: rem($attr-value) !important;
-                    } @else {
-                        #{$attr}: #{$attr-value}#{$unit} !important;
-                    }
-                }
-            }
-        }
-    }
+			// Fix for iOS version lower than 14.5 (Safari version lower than 14.1)
+			// Source : https://ppuzio.medium.com/flexbox-gap-workaround-for-safari-on-ios-14-13-and-lower-ffcae589eb69
+			@if ($attr == 'gap') {
+				@supports (-webkit-touch-callout: none) and (not (translate: none)) {
+					.#{$attr-name}#{$attr-value}:not(:last-child) {
+						margin-right: rem($attr-value) !important;
+					}
+				}
+			}
+		}
+	} @else {
+		$min-size: if($media-query == 'md', 0px, 768px);
+		$max-size: if($media-query == 'md', 768px, 1192px);
+		@media screen and (min-width: $min-size) and (max-width: $max-size) {
+			@for $i from 1 through $attr-count {
+				$attr-value: ($attr-steps * $i) + $initial-value;
+
+				$attr-name: if($attr-alias == '', $attr, $attr-alias);
+				.#{$attr-name}#{$attr-value} {
+					@if $unit == rem {
+						#{$attr}: rem($attr-value) !important;
+					} @else {
+						#{$attr}: #{$attr-value}#{$unit} !important;
+					}
+				}
+
+				// Fix for iOS version lower than 14.5 (Safari version lower than 14.1)
+				// Source : https://ppuzio.medium.com/flexbox-gap-workaround-for-safari-on-ios-14-13-and-lower-ffcae589eb69
+				@if ($attr == 'gap') {
+					@supports (-webkit-touch-callout: none) and (not (translate: none)) {
+						.#{$attr-name}#{$attr-value}:not(:last-child) {
+							margin-right: rem($attr-value) !important;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 @mixin attr-not-numeric(
-    $attr,
-    $attr-alias: '',
-    $media-query: '',
-    $attr-vals...
+	$attr,
+	$attr-alias: '',
+	$media-query: '',
+	$attr-vals...
 ) {
-    @if ($media-query == '') {
-        $attr-name: if($attr-alias == '', $attr, $attr-alias);
+	@if ($media-query == '') {
+		$attr-name: if($attr-alias == '', $attr, $attr-alias);
 
-        @each $val in $attr-vals {
-            @each $name, $alias in $val {
-                .#{$attr-name}#{$alias} {
-                    #{$attr}: $name !important;
-                }
-            }
-        }
-    } @else {
-        $min-size: if($media-query == 'md', 0px, 768px);
-        $max-size: if($media-query == 'md', 768px, 1192px);
-        $attr-name: if($attr-alias == '', $attr, $attr-alias);
-        @media screen and (min-width: $min-size) and (max-width: $max-size) {
-            @each $val in $attr-vals {
-                @each $name, $alias in $val {
-                    .#{$attr-name}#{$alias} {
-                        #{$attr}: $name !important;
-                    }
-                }
-            }
-        }
-    }
+		@each $val in $attr-vals {
+			@each $name, $alias in $val {
+				.#{$attr-name}#{$alias} {
+					#{$attr}: $name !important;
+				}
+			}
+		}
+	} @else {
+		$min-size: if($media-query == 'md', 0px, 768px);
+		$max-size: if($media-query == 'md', 768px, 1192px);
+		$attr-name: if($attr-alias == '', $attr, $attr-alias);
+		@media screen and (min-width: $min-size) and (max-width: $max-size) {
+			@each $val in $attr-vals {
+				@each $name, $alias in $val {
+					.#{$attr-name}#{$alias} {
+						#{$attr}: $name !important;
+					}
+				}
+			}
+		}
+	}
 }
 
-@mixin attr-x-custom (
-    $attr,
-    $attr-steps: 10,
-    $initial-value: 0,
-    $initial-step: 1,
-    $end-included-step: 10,
-    $unit: '%',
-    $attr-alias: '',
+@mixin attr-x-custom(
+	$attr,
+	$attr-steps: 10,
+	$initial-value: 0,
+	$initial-step: 1,
+	$end-included-step: 10,
+	$unit: '%',
+	$attr-alias: ''
 ) {
-    @for $i from $initial-step through $end-included-step {
-        $attr-value: ($attr-steps * $i) + $initial-value;
+	@for $i from $initial-step through $end-included-step {
+		$attr-value: ($attr-steps * $i) + $initial-value;
 
-        $attr-name: null;
-        $attr-full-name: null;
+		$attr-name: null;
+		$attr-full-name: null;
 
-        @if meta.type-of($attr-alias) == function {
-            $attr-name: meta.call($attr-alias, $attr-value, $i);
-            $attr-full-name: #{$attr-name}
-        } @else {
-            $attr-name: if($attr-alias == '', $attr-name, $attr-alias);
-            $attr-full-name: #{$attr-name}#{$attr-value}
-        }
+		@if meta.type-of($attr-alias) == function {
+			$attr-name: meta.call($attr-alias, $attr-value, $i);
+			$attr-full-name: #{$attr-name};
+		} @else {
+			$attr-name: if($attr-alias == '', $attr-name, $attr-alias);
+			$attr-full-name: #{$attr-name}#{$attr-value};
+		}
 
-        .#{$attr-full-name} {
-            @if $unit == rem {
-                #{$attr}: rem($attr-value) !important;
-            } @else {
-                #{$attr}: #{$attr-value}#{$unit} !important;
-            }
-        }
-    }
+		.#{$attr-full-name} {
+			@if $unit == rem {
+				#{$attr}: rem($attr-value) !important;
+			} @else {
+				#{$attr}: #{$attr-value}#{$unit} !important;
+			}
+		}
+	}
 }

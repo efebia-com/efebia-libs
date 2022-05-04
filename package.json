@@ -1,22 +1,22 @@
 {
-  "name": "efebia-libs",
-  "version": "0.1.1",
-  "description": "JS, Svelte and SCSS libs",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/efebia-com/efebia-libs.git"
-  },
-  "author": "Efebia",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/efebia-com/efebia-libs/issues"
-  },
-  "devDependencies": {
-    "svelte": "^3.44.0"
-  },
-  "homepage": "https://github.com/efebia-com/efebia-libs#readme"
+	"name": "efebia-libs",
+	"version": "0.1.2",
+	"description": "JS, Svelte and SCSS libs",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/efebia-com/efebia-libs.git"
+	},
+	"author": "Efebia",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/efebia-com/efebia-libs/issues"
+	},
+	"devDependencies": {
+		"svelte": "^3.44.0"
+	},
+	"homepage": "https://github.com/efebia-com/efebia-libs#readme"
 }
